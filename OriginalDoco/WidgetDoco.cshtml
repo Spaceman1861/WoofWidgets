@@ -1,0 +1,917 @@
+﻿<script>
+    function embedGliffy() {
+        document.write("<img usemap='#GLIFFY_MAP_" + gliffy_did + "' class='img-thumbnail' border='0' src='http://www.gliffy.com/go/view/" + gliffy_did + ".png'/>");
+        document.write("<script src='http://www.gliffy.com/go/diagramEmbed/" + gliffy_did + "' type='text/javascript'><//script>");
+    }
+</script>
+
+<div class="container">
+    <div class="card">
+        <div class="card-header bgm-amber">
+            <h1>Binding Values</h1>
+        </div>
+        <div class="card-body card-padding">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="p-b-25">
+                        <h4>String Only Binding</h4>
+
+                        <p>A Binding is treated as a string when prefaced with a '~'.</p>
+                        <h5>Binding Code</h5>
+                        <pre>&lt;img data-bind=&#39;{&quot;attr&quot;:{&quot;attr&quot;:&quot;src&quot;,&quot;value&quot;:&quot;~../documents/images/bookAccomImage.jpg&quot;}}&#39; /&gt;</pre>
+                    
+                        <h5>Binding Result</h5>
+                        <div class="well well-sm">
+                            <div data-role="baseWidget">
+                                <img
+                                    data-bind='{"attr":{"attr":"src","value":"~../documents/images/bookAccomImage.jpg"}}'
+                                    class="img-thumbnail"/>
+                            </div>
+                        </div>
+                        <hr/>
+                    </div>
+
+                    <div class="p-b-25">
+                        <h4>Multi-Value Bindings</h4>
+                        <p>The above example is kinda useless in real life but it will when used with the plus simple it can become more useful. The plus simple will add bound values together, The values can be widget values or string values.</p>
+
+                        <h5>Binding Code</h5>
+                        <pre>&lt;div data-bind=&#39;{&quot;text&quot;:&quot;widgetName + ~ IS SILLY + ~ Or is it?&quot;}&#39;&gt;&lt;/div&gt;</pre>
+                    
+                        <h5>Binding Result</h5>
+                        <div class="well well-sm">
+                            <div data-role="baseWidget">
+                                <div data-bind='{"text":"widgetName + ~ IS SILLY + ~ Or is it?"}'></div>
+                            </div>
+                        </div>
+                        <hr/>
+                    </div>
+
+                    <div class="p-b-25">
+                        <h4>Widget Value Binding</h4>
+                        <p>A widget has 3 areas that can be accessed as binding values. The first area that has a property with a name that matches the value will be returned.</p>
+
+                        <span>The three areas are as follows in order of priority.</span>
+                        <ul>
+                            <li>ViewModel</li>
+                            <li>DataSource</li>
+                            <li>Options</li>
+                        </ul>
+
+                        <h5>Binding Code</h5>
+                        <pre>&lt;div data-bind=&#39;{&quot;text&quot;:&quot;widgetName&quot;}&#39;&gt;&lt;/div&gt;</pre>
+                   
+                        <h5>Binding Result</h5>
+                        <div class="well well-sm">
+                            <div data-role="baseWidget">
+                                <div data-bind='{"text":"widgetName"}'></div>
+                            </div>
+                        </div>
+                        <hr/>
+                    </div>
+
+                    <div class="p-b-25">
+                        <h4>Widget Function Binding</h4>
+                        <p>If the value found on the function the binding will execute it and return the value</p>
+
+                        <h5>Binding Code</h5>
+                        <pre>&lt;script&gt;
+be.widgets.exampleWidget = $.extend(true,{}, be.widgets.baseWidget,
+{
+    options: {
+        widgetName: &quot;exampleWidget&quot;
+    },
+
+    viewModel: {
+        random: function () {
+            return Math.random(100);
+        }
+    }
+});
+&lt;/script&gt;
+&lt;div data-role=&quot;exampleWidget&quot;&gt;
+&lt;div data-bind=&#39;{&quot;text&quot;:&quot;random&quot;}&#39;&gt;&lt;/div&gt;
+&lt;div data-bind=&#39;{&quot;text&quot;:&quot;random&quot;}&#39;&gt;&lt;/div&gt;
+&lt;div data-bind=&#39;{&quot;text&quot;:&quot;random&quot;}&#39;&gt;&lt;/div&gt;
+&lt;div data-bind=&#39;{&quot;text&quot;:&quot;random&quot;}&#39;&gt;&lt;/div&gt;
+&lt;div data-bind=&#39;{&quot;text&quot;:&quot;random&quot;}&#39;&gt;&lt;/div&gt;
+&lt;/div&gt;</pre>
+                   
+                        <h5>Binding Result</h5>
+                        <div class="well well-sm">
+                            <script>
+                                be.widgets.exampleWidget = $.extend(true,{}, be.widgets.baseWidget,
+                                {
+                                    options: {
+                                        widgetName: "exampleWidget"
+                                    },
+
+                                    viewModel: {
+                                        random: function()
+                                        {
+                                            return Math.random(100);
+                                        }
+                                    }
+                                });
+                            </script>
+                            <div data-role="exampleWidget">
+                                <div data-bind='{"text":"random"}'></div>
+                                <div data-bind='{"text":"random"}'></div>
+                                <div data-bind='{"text":"random"}'></div>
+                                <div data-bind='{"text":"random"}'></div>
+                                <div data-bind='{"text":"random"}'></div>
+                            </div>
+                        </div>
+                        <hr/>
+                    </div>
+
+                    <div class="p-b-25">
+                        <h4>Widget Depth Value Binding</h4>
+                        <p>If your trying to bind to an a value inside and object you can use '.' to seperate the levels.</p>
+
+                        <h5>Binding Code</h5>
+                        <pre>&lt;div data-role=&quot;baseWidget&quot; data-source=&#39;[{&quot;tree&quot;:{&quot;branch&quot;:{&quot;leafCount&quot;:1337}}}]&#39;&gt;
+    &lt;div data-bind=&#39;{&quot;text&quot;:&quot;tree.branch.leafCount&quot;}&#39;&gt;&lt;/div&gt;
+&lt;/div&gt;</pre>
+                        
+                        <h5>Binding Result</h5>
+                        <div class="well well-sm">
+                            <div data-role="baseWidget" data-source='[{"tree":{"branch":{"leafCount":1337}}}]'>
+                                <div data-bind='{"text":"tree.branch.leafCount"}'></div>
+                            </div>
+                        </div>
+                        <hr/>
+
+                    </div>
+
+                    <h3>Binding Types</h3>
+                    <div class="p-b-25">
+                        <p>
+                            Here is a complete list of the widget bindings that are avalible as of 17/08/2015
+                        </p>
+                        <ul>
+                            <li>Text (text)</li>
+                            <li>Attribute (attr)</li>
+                            <li>Value (value)</li>
+                            <li>Date (date)</li>
+                            <li>Html (html)</li>
+                            <li>Money (money)</li>
+                            <li>Visible (visible)</li>
+                            <li>Td Hide (tdhide)</li>
+                            <li>Click (click)</li>
+                            <li>Change (change)</li>
+                            <li>Keyup (keyup)</li>
+                            <li>Keydown (keydown)</li>
+                            <li>Enabled (enabled)</li>
+                        </ul>
+
+                        <p>
+                            It should be noted that you can bind an elements multiple times. i.e.
+                        </p>
+                        <pre>&lt;div data-bind=&#39;{&quot;text&quot;:&quot;somevalue&quot;,&quot;click&quot;:&quot;someclickevent&quot;,&quot;click&quot;:&quot;anotherclickevent&quot;,&quot;visible&quot;:&quot;abool&quot;}&#39;&gt;&lt;/div&gt;</pre>
+                        <hr/>
+                    </div>
+
+                    <div class="p-b-25">
+                        <h4>Text</h4>
+                        <p>This binding is used for basic value to div content cases</p>
+
+                        <h5>Example Implementation</h5>
+                        <pre>&lt;div data-bind=&#39;{&quot;text&quot;:&quot;widgetName&quot;}&#39;&gt;&lt;/div&gt;</pre>
+                        <h5>Live Demo 1 Code</h5>
+                        <pre>&lt;div data-role=&quot;baseWidget&quot;&gt;
+    &lt;div data-bind=&#39;{&quot;text&quot;:&quot;widgetName&quot;}&#39;&gt;&lt;/div&gt;
+&lt;/div&gt;</pre>
+                        <h5>Live Demo 1 Result</h5>
+                        <div class="well well-sm">
+                            <div data-role="baseWidget">
+                                <div data-bind='{"text":"widgetName"}'></div>
+                            </div>
+                        </div>
+
+                        <h5>Live Demo 2 Code</h5>
+                        <pre>&lt;div data-role=&quot;baseWidget&quot;&gt;
+    &lt;div data-bind=&#39;{&quot;text&quot;:&quot;widgetName&quot;}&#39;&gt;&lt;/div&gt;
+    &lt;input data-bind=&#39;{&quot;value&quot;:&quot;widgetName&quot;}&#39; type=&quot;text&quot;/&gt;
+&lt;/div&gt;</pre>
+                        <h5>Live Demo 2 Result</h5>
+                        <div class="well well-sm">
+                            <div data-role="baseWidget">
+                                <div data-bind='{"text":"widgetName"}'></div>
+                                <input data-bind='{"value":"widgetName"}' type="text"/>
+                            </div>
+                        </div>
+                        <hr/>
+                    </div>
+
+                    <div class="p-b-25">
+
+                        <h4>Attribute</h4>
+                        <p>This binding is used for changing any attribute on an element</p>
+
+                        <h5>Example Implementation</h5>
+                        <pre>&lt;img data-bind=&#39;{&quot;attr&quot;:{&quot;attr&quot;:&quot;src&quot;,&quot;value&quot;:&quot;~../documents/images/bookAccomImage.jpg&quot;}}&#39; /&gt;</pre>
+                        <h5>Live Demo Code</h5>
+                        <pre>&lt;div data-role=&quot;baseWidget&quot;&gt;
+    &lt;img
+        data-bind=&#39;{&quot;attr&quot;:{&quot;attr&quot;:&quot;src&quot;,&quot;value&quot;:&quot;~../documents/images/bookAccomImage.jpg&quot;}}&#39;
+        class=&quot;img-thumbnail&quot;
+    /&gt;
+&lt;/div&gt;</pre>
+                        <h5>Live Demo Result</h5>
+                        <div data-role="baseWidget">
+                            <img
+                                data-bind='{"attr":{"attr":"src","value":"~../documents/images/bookAccomImage.jpg"}}'
+                                class="img-thumbnail"/>
+                        </div>
+                        <hr/>
+                    </div>
+
+                    <div class="p-b-25">
+                        <h4>Value</h4>
+                        <p>This is used to bind the value of and input to a field on the model. It is valid for any input tag</p>
+
+                        <h5>Example Implementation</h5>
+                        <pre>&lt;input data-bind=&#39;{&quot;value&quot;:&quot;widgetName&quot;}&#39;&gt;</pre>
+                        <h5>Live Demo 1 Code</h5>
+                        <pre>&lt;div data-role=&quot;baseWidget&quot;&gt;
+    &lt;div data-bind=&#39;{&quot;text&quot;:&quot;widgetName&quot;}&#39;&gt;&lt;/div&gt;
+    &lt;input data-bind=&#39;{&quot;value&quot;:&quot;widgetName&quot;}&#39; type=&quot;text&quot;/&gt;
+&lt;/div&gt;</pre>
+                        <h5>Live Demo 1 Result</h5>
+                        <div class="well well-sm">
+                            <div data-role="baseWidget">
+                                <div data-bind='{"text":"widgetName"}'></div>
+                                <input data-bind='{"value":"widgetName"}' type="text"/>
+                            </div>
+                        </div>
+                        <hr/>
+                    </div>
+
+                    <div class="p-b-25">
+                        <h4>Date</h4>
+                        <p>Similar to the Value binding but automaticly put a datepicker on an input field</p>
+
+                        <h5>Example Implementation</h5>
+                        <pre>&lt;div data-bind=&#39;{&quot;date&quot;:&quot;vmdate&quot;}&#39;&gt;&lt;/div&gt;</pre>
+                        <h5>Live Demo Code</h5>
+                        <pre>&lt;script&gt;
+    be.widgets.exampleWidget2 = $.extend(true,{}, be.widgets.baseWidget,
+    {
+        options: {
+            widgetName: &quot;exampleWidget2&quot;
+        },
+
+        viewModel: {
+            vmdate: new Date()
+        }
+    });
+&lt;/script&gt;
+&lt;div data-role=&quot;exampleWidget2&quot;&gt;
+    &lt;div data-bind=&#39;{&quot;text&quot;:&quot;vmdate&quot;}&#39;&gt;&lt;/div&gt;
+    &lt;div data-bind=&#39;{&quot;date&quot;:&quot;vmdate&quot;}&#39;&gt;&lt;/div&gt;
+&lt;/div&gt;</pre>
+                        <h5>Live Demo Result</h5>
+                        <div class="well well-sm">
+                            <script>
+                                be.widgets.exampleWidget2 = $.extend(true,{}, be.widgets.baseWidget,
+                                {
+                                    options: {
+                                        widgetName: "exampleWidget2"
+                                    },
+
+                                    viewModel: {
+                                        vmdate: new Date()
+                                    }
+                                });
+                            </script>
+                            <div data-role="exampleWidget2">
+                                <div data-bind='{"text":"vmdate"}'></div>
+                                <div data-bind='{"date":"vmdate"}'></div>
+                            </div>
+                        </div>
+                        <hr/>
+                    </div>
+
+                    <div class="p-b-25">
+                        <h4>Html</h4>
+                        <p>The Same as text but it will not encode the binding value allowing for you to bind html</p>
+
+                        <h5>Example Implementation</h5>
+                        <pre>&lt;div data-bind=&#39;{&quot;html&quot;:&quot;boom&quot;}&#39;&gt;&lt;/div&gt;</pre>
+                        <h5>Live Demo Code</h5>
+                        <pre>&lt;script&gt;
+    be.widgets.exampleWidget3 = $.extend(true,{}, be.widgets.baseWidget,
+    {
+        options: {
+            widgetName: &quot;exampleWidget3&quot;
+        },
+
+        viewModel: {
+            boom: &quot;&lt;b&gt;BOOM&lt;/b&gt;&quot;
+        }
+    });
+&lt;/script&gt;
+&lt;div data-role=&quot;exampleWidget3&quot;&gt;
+    &lt;div data-bind=&#39;{&quot;html&quot;:&quot;boom&quot;}&#39;&gt;&lt;/div&gt;
+&lt;/div&gt;</pre>
+                        <h5>Live Demo Result</h5>
+                        <div class="well well-sm">
+                            <script>
+                                be.widgets.exampleWidget3 = $.extend(true,{}, be.widgets.baseWidget,
+                                {
+                                    options: {
+                                        widgetName: "exampleWidget3"
+                                    },
+
+                                    viewModel: {
+                                        boom: "<b>BOOM</b>"
+                                    }
+                                });
+                            </script>
+                            <div data-role="exampleWidget3">
+                                <div data-bind='{"html":"boom"}'></div>
+                            </div>
+                        </div>
+                        <hr/>
+                    </div>
+                    <div class="p-b-25">
+                        <h4>Money</h4>
+                        <p>The Same as text but it will format the result to a predefined money formay</p>
+
+                        <h5>Example Implementation</h5>
+                        <pre>&lt;div data-bind=&#39;{&quot;money&quot;:&quot;dollarBill&quot;}&#39;&gt;&lt;/div&gt;</pre>
+                        <h5>Live Demo Code</h5>
+                        <pre>&lt;script&gt;
+    be.widgets.exampleWidget4 = $.extend(true,{}, be.widgets.baseWidget,
+    {
+        options: {
+            widgetName: &quot;exampleWidget4&quot;
+        },
+
+        viewModel: {
+            dollarBill: 1337.05
+        }
+    });
+&lt;/script&gt;
+&lt;div data-role=&quot;exampleWidget4&quot;&gt;
+    &lt;div data-bind=&#39;{&quot;money&quot;:&quot;dollarBill&quot;}&#39;&gt;&lt;/div&gt;
+&lt;/div&gt;</pre>
+                        <h5>Live Demo Result</h5>
+                        <div class="well well-sm">
+                            <script>
+                                be.widgets.exampleWidget4 = $.extend(true,{}, be.widgets.baseWidget,
+                                {
+                                    options: {
+                                        widgetName: "exampleWidget4"
+                                    },
+
+                                    viewModel: {
+                                        dollarBill: 1337.05
+                                    }
+                                });
+                            </script>
+                            <div data-role="exampleWidget4">
+                                <div data-bind='{"money":"dollarBill"}'></div>
+                            </div>
+                        </div>
+                        <hr/>
+                    </div>
+                    <div class="p-b-25">
+                        <h4>Visible</h4>
+                        <p>Toggles the visilbity of the bound object. Allows boolean binding see example for usage of "!"</p>
+
+                        <h5>Example Implementations</h5>
+                        <pre>&lt;div data-bind=&#39;{&quot;visible&quot;:&quot;trueValue&quot;}&#39;&gt;Visible when trueValue == true&lt;/div&gt;</pre>
+                        <pre>&lt;div data-bind=&#39;{&quot;visible&quot;:&quot;!trueValue&quot;}&#39;&gt;Visible when trueValue != true&lt;/div&gt;</pre>
+
+                        <h5>Live Demo Code</h5>
+                        <pre>&lt;script&gt;
+    be.widgets.exampleWidget5 = $.extend(true,{}, be.widgets.baseWidget,
+    {
+        options: {
+            widgetName: &quot;exampleWidget4&quot;
+        },
+
+        viewModel: {
+            trueValue: true,
+            falseValue: false
+        }
+    });
+&lt;/script&gt;
+&lt;div data-role=&quot;exampleWidget5&quot;&gt;
+    &lt;div data-bind=&#39;{&quot;visible&quot;:&quot;trueValue&quot;}&#39;&gt;Visible when trueValue == true&lt;/div&gt;
+    &lt;div data-bind=&#39;{&quot;visible&quot;:&quot;falseValue&quot;}&#39;&gt;Visible when falseValue == true&lt;/div&gt;
+    &lt;div data-bind=&#39;{&quot;visible&quot;:&quot;!trueValue&quot;}&#39;&gt;Visible when trueValue != true&lt;/div&gt;
+    &lt;div data-bind=&#39;{&quot;visible&quot;:&quot;!falseValue&quot;}&#39;&gt;Visible when falseValue != true&lt;/div&gt;
+&lt;/div&gt;</pre>
+                        <h5>Live Demo Result</h5>
+                        <div class="well well-sm">
+                            <script>
+                                be.widgets.exampleWidget5 = $.extend(true,{}, be.widgets.baseWidget,
+                                {
+                                    options: {
+                                        widgetName: "exampleWidget5"
+                                    },
+
+                                    viewModel: {
+                                        trueValue: true,
+                                        falseValue: false
+                                    }
+                                });
+                            </script>
+                            <div data-role="exampleWidget5">
+                                <div data-bind='{"visible":"trueValue"}'>Visible when trueValue == true</div>
+                                <div data-bind='{"visible":"falseValue"}'>Visible when falseValue == true</div>
+                                <div data-bind='{"visible":"!trueValue"}'>Visible when trueValue != true</div>
+                                <div data-bind='{"visible":"!falseValue"}'>Visible when falseValue != true</div>
+                            </div>
+                        </div>
+                        <hr/>
+                    </div>
+                    <div class="p-b-25">
+                        <h4>Td Hide</h4>
+                        <p>Similar to visible however it maintains the cell structure when hidden in a table.</p>
+
+                        <h5>Example Implementation</h5>
+                        <pre>&lt;td data-bind=&#39;{&quot;tdhide&quot;:&quot;trueValue&quot;}&#39;&gt;Visible when trueValue == true&lt;/td&gt;</pre>
+                        <pre>&lt;td data-bind=&#39;{&quot;tdhide&quot;:&quot;!trueValue&quot;}&#39;&gt;Visible when trueValue != true&lt;/td&gt;</pre>
+                        <h5>Live Demo Code</h5>
+                        <pre>&lt;script&gt;
+    be.widgets.exampleWidget6 = $.extend(true,{}, be.widgets.baseWidget,
+    {
+        options: {
+            widgetName: &quot;exampleWidget6&quot;
+        },
+
+        viewModel: {
+            trueValue: true,
+            falseValue: false
+        }
+    });
+&lt;/script&gt;
+&lt;table class=&quot;table&quot;&gt;
+    &lt;tr data-role=&quot;exampleWidget6&quot;&gt;
+        &lt;td data-bind=&#39;{&quot;tdhide&quot;:&quot;trueValue&quot;}&#39;&gt;Visible when trueValue == true&lt;/td&gt;
+        &lt;td data-bind=&#39;{&quot;tdhide&quot;:&quot;falseValue&quot;}&#39;&gt;Visible when falseValue == true&lt;/td&gt;
+        &lt;td data-bind=&#39;{&quot;tdhide&quot;:&quot;!trueValue&quot;}&#39;&gt;Visible when trueValue != true&lt;/td&gt;
+        &lt;td data-bind=&#39;{&quot;tdhide&quot;:&quot;!falseValue&quot;}&#39;&gt;Visible when falseValue != true&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;</pre>
+                        <h5>Live Demo Result</h5>
+                        <div class="well well-sm">
+                            <script>
+                                be.widgets.exampleWidget6 = $.extend(true,{}, be.widgets.baseWidget,
+                                {
+                                    options: {
+                                        widgetName: "exampleWidget6"
+                                    },
+
+                                    viewModel: {
+                                        trueValue: true,
+                                        falseValue: false
+                                    }
+                                });
+                            </script>
+                            <table class="table">
+                                <tr data-role="exampleWidget6">
+                                    <td data-bind='{"tdhide":"trueValue"}'>Visible when trueValue == true</td>
+                                    <td data-bind='{"tdhide":"falseValue"}'>Visible when falseValue == true</td>
+                                    <td data-bind='{"tdhide":"!trueValue"}'>Visible when trueValue != true</td>
+                                    <td data-bind='{"tdhide":"!falseValue"}'>Visible when falseValue != true</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <hr/>
+                    </div>
+                <div class="p-b-25">
+                    <h4>Click</h4>
+                    <p>On click executes the bound function</p>
+
+                    <h5>Example Implementation</h5>
+                    <pre>&lt;button class=&quot;btn btn-success&quot; data-bind=&#39;{&quot;click&quot;:&quot;clicker&quot;}&#39;&gt;CLick ME!&lt;/button&gt;</pre>
+                    <h5>Live Demo Code</h5>
+                    <pre>&lt;script&gt;
+    be.widgets.exampleWidget7 = $.extend(true,{}, be.widgets.baseWidget,
+    {
+        options: {
+            widgetName: &quot;exampleWidget7&quot;
+        },
+
+        viewModel: {
+            clicker: function()
+            {
+                alert(&quot;KAPOW!&quot;);
+            }
+        }
+    });
+&lt;/script&gt;
+&lt;div data-role=&quot;exampleWidget7&quot;&gt;
+    &lt;button class=&quot;btn btn-success&quot; data-bind=&#39;{&quot;click&quot;:&quot;clicker&quot;}&#39;&gt;CLick ME!&lt;/button&gt;
+&lt;/div&gt;</pre>
+                    <h5>Live Demo Result</h5>
+                    <div class="well well-sm">
+                        <script>
+                            be.widgets.exampleWidget7 = $.extend(true,{}, be.widgets.baseWidget,
+                            {
+                                options: {
+                                    widgetName: "exampleWidget7"
+                                },
+
+                                viewModel: {
+                                    clicker: function()
+                                    {
+                                        alert("KAPOW!");
+                                    }
+                                }
+                            });
+                        </script>
+                        <div data-role="exampleWidget7">
+                            <button class="btn btn-success" data-bind='{"click":"clicker"}'>CLick ME!</button>
+                        </div>
+                    </div>
+                    <hr/>
+                </div>
+
+
+                <div class="p-b-25">
+                    <h4>Change</h4>
+                    <p>When the change event is fired on a bound input tag the bound function will execute</p>
+
+                    <h5>Example Implementation</h5>
+                    <pre>&lt;input data-bind=&#39;{&quot;change&quot;:&quot;notify&quot;}&#39; type=&quot;text&quot;/&gt;</pre>
+                    <h5>Live Demo Code</h5>
+                    <pre>&lt;script&gt;
+    be.widgets.exampleWidget8 = $.extend(true,{}, be.widgets.baseWidget,
+    {
+        options: {
+            widgetName: &quot;exampleWidget8&quot;
+        },
+
+        viewModel: {
+            notify: function()
+            {
+                alert(&quot;KAPOW!&quot;);
+            }
+        }
+    });
+&lt;/script&gt;
+&lt;div data-role=&quot;exampleWidget8&quot;&gt;
+    &lt;input data-bind=&#39;{&quot;change&quot;:&quot;notify&quot;}&#39; type=&quot;text&quot;/&gt;
+&lt;/div&gt;</pre>
+                    <h5>Live Demo Result</h5>
+                    <div class="well well-sm">
+                        <script>
+                            be.widgets.exampleWidget8 = $.extend(true,{}, be.widgets.baseWidget,
+                            {
+                                options: {
+                                    widgetName: "exampleWidget8"
+                                },
+
+                                viewModel: {
+                                    notify: function()
+                                    {
+                                        alert("KAPOW!");
+                                    }
+                                }
+                            });
+                        </script>
+                        <div data-role="exampleWidget8">
+                            <input data-bind='{"change":"notify"}' type="text"/>
+                        </div>
+                    </div>
+                    <hr/>
+                </div>
+
+
+                <div class="p-b-25">
+                    <h4>KeyUp / KeyDown</h4>
+                    <p>When the KeyUp / KeyDown event is fired on a bound input tag the bound function will execute</p>
+
+                    <h5>Example Implementation</h5>
+                    <pre>&lt;input data-bind=&#39;{&quot;keyup&quot;:&quot;notifyUp&quot;,&quot;keydown&quot;:&quot;notifyDown&quot;}&#39; type=&quot;text&quot; /&gt;</pre>
+                    <h5>Live Demo Code</h5>
+                    <pre>&lt;script&gt;
+    be.widgets.exampleWidget9 = $.extend(true,{}, be.widgets.baseWidget,
+    {
+        options: {
+            widgetName: &quot;exampleWidget9&quot;
+        },
+
+        viewModel: {
+            notifyUp: function()
+            {
+                console.log(&quot;notifyUp!&quot;);
+            },
+            notifyDown: function()
+            {
+                console.log(&quot;notifyDown!&quot;);
+            }
+        }
+    });
+&lt;/script&gt;
+&lt;div data-role=&quot;exampleWidget9&quot;&gt;
+    &lt;input data-bind=&#39;{&quot;keyup&quot;:&quot;notifyUp&quot;,&quot;keydown&quot;:&quot;notifyDown&quot;}&#39; type=&quot;text&quot; /&gt;
+&lt;/div&gt;</pre>
+                    <h5>Live Demo Result</h5>
+                    <div class="well well-sm">
+                        <script>
+                            be.widgets.exampleWidget9 = $.extend(true,{}, be.widgets.baseWidget,
+                            {
+                                options: {
+                                    widgetName: "exampleWidget9"
+                                },
+
+                                viewModel: {
+                                    notifyUp: function()
+                                    {
+                                        console.log("notifyUp!");
+                                    },
+                                    notifyDown: function()
+                                    {
+                                        console.log("notifyDown!");
+                                    }
+                                }
+                            });
+                        </script>
+                        <div data-role="exampleWidget9">
+                            <input data-bind='{"keyup":"notifyUp","keydown":"notifyDown"}' type="text"/>
+                        </div>
+                    </div>
+                    <hr/>
+                </div>
+
+                <div class="p-b-25">
+                    <h4>Enabled</h4>
+                    <p>Toggles the enabled state on input tags</p>
+
+                    <h5>Example Implementation</h5>
+                    <pre>&lt;input data-bind=&#39;{&quot;enabled&quot;:&quot;trueValue&quot;}&#39; type=&quot;text&quot; /&gt;</pre>
+                    <h5>Live Demo Code</h5>
+                    <pre>&lt;script&gt;
+    be.widgets.exampleWidget10 = $.extend(true,{}, be.widgets.baseWidget,
+    {
+        options: {
+            widgetName: &quot;exampleWidget10&quot;
+        },
+
+        viewModel: {
+            trueValue: true,
+            falseValue: true
+        }
+    });
+&lt;/script&gt;
+&lt;div data-role=&quot;exampleWidget10&quot;&gt;
+    &lt;input data-bind=&#39;{&quot;enabled&quot;:&quot;trueValue&quot;}&#39; type=&quot;text&quot; /&gt;
+    &lt;input data-bind=&#39;{&quot;enabled&quot;:&quot;!trueValue&quot;}&#39; type=&quot;text&quot; /&gt;
+    &lt;input data-bind=&#39;{&quot;enabled&quot;:&quot;!falseValue&quot;}&#39; type=&quot;text&quot; /&gt;
+    &lt;input data-bind=&#39;{&quot;enabled&quot;:&quot;falseValue&quot;}&#39; type=&quot;text&quot;/&gt;
+    &lt;input data-bind=&#39;{&quot;enabled&quot;:&quot;trueValue&quot;}&#39; type=&quot;checkbox&quot; /&gt;
+    &lt;input data-bind=&#39;{&quot;enabled&quot;:&quot;!trueValue&quot;}&#39; type=&quot;checkbox&quot; /&gt;
+&lt;/div&gt;</pre>
+                    <h5>Live Demo Result</h5>
+                    <div class="well well-sm">
+                        <script>
+                            be.widgets.exampleWidget10 = $.extend(true,{}, be.widgets.baseWidget,
+                            {
+                                options: {
+                                    widgetName: "exampleWidget10"
+                                },
+
+                                viewModel: {
+                                    trueValue: true,
+                                    falseValue: true
+                                }
+                            });
+                        </script>
+                        <div data-role="exampleWidget10">
+                            <input data-bind='{"enabled":"trueValue"}' type="text"/>
+                            <input data-bind='{"enabled":"!trueValue"}' type="text"/>
+                            <input data-bind='{"enabled":"!falseValue"}' type="text"/>
+                            <input data-bind='{"enabled":"falseValue"}' type="text"/>
+                            <input data-bind='{"enabled":"trueValue"}' type="checkbox"/>
+                            <input data-bind='{"enabled":"!trueValue"}' type="checkbox"/>
+                        </div>
+                    </div>
+                    <hr/>
+                </div>
+
+                <div class="p-b-25">
+                    <h4>Templates</h4>
+                    <p>Templates are a powerful method of iterating over contain from a datasource and producing corrisponding html. See more documentation at the templating engine from http://www.jsviews.com/</p>
+                    <p>Note that templates can also have normal bindings.</p>
+                    <p>Also note that templates can have widgets imbeded in them.</p>
+
+                    <h5>Example Implementation</h5>
+                    <pre>&lt;div data-bind=&#39;{&quot;source&quot;:&quot;adatasourceonthewidget&quot;}&#39; data-template=&quot;aTemplateId&quot;&gt;&lt;/div&gt;</pre>
+                    
+                    
+                    <h5>Live Demo Code</h5>
+                    <pre>&lt;script&gt;
+    be.widgets.exampleWidget11 = $.extend(true,{}, be.widgets.baseWidget,
+    {
+        options: {
+            widgetName: &quot;exampleWidget11&quot;
+        },
+
+        dataSource: [
+            {id : 1, name:&quot;haxzor&quot;,someNos:[1,4,76,9,3,12]},
+            {id : 2, name:&quot;cooking&quot;,someNos:[1,4,6]},
+            {id : 3, name:&quot;f1driver&quot;,someNos:[1,4324324,12]},
+            {id : 4, name:&quot;jedi&quot;,someNos:[1,&quot;I LIED I&#39;M A STRING&quot;]},
+            {id : 5, name:&quot;stampcollector&quot;,someNos:[]},
+            {id : 5, name:&quot;stampcollector3&quot;,someNos:[0,1]},
+            {id : 5, name:&quot;stampcollector2&quot;,someNos:null},
+            {id : 6, name:&quot;badSpeller&quot;,someNos:[1,true,false,null,3,12]}
+        ],
+
+        viewModel: {
+            someClickFunciton : function()
+            {
+                alert(&quot;KAPOW&quot;);
+            }   
+        }
+    });
+
+    be.widgets.exampleWidget12 = $.extend(true,{}, be.widgets.baseWidget,
+    {
+        options: {
+            widgetName: &quot;exampleWidget12&quot;
+        },
+
+        viewModel: {
+            someClickFunciton : function()
+            {
+                alert(&quot;A DIFFERENT KAPOW&quot;);
+            }   
+        }
+    });
+&lt;/script&gt;
+
+&lt;div data-role=&quot;exampleWidget11&quot;&gt;
+    &lt;table class=&quot;table table-responsive&quot; data-bind=&#39;{&quot;source&quot;:&quot;dataSource&quot;}&#39; data-template=&quot;genericRow&quot;&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;text/x-widget-template&quot; id=&quot;genericRow&quot;&gt;
+    &lt;tr&gt;
+        &lt;td&gt;{{:id}}&lt;/td&gt;
+        &lt;td data-bind=&#39;{&quot;click&quot;:&quot;someClickFunciton&quot;}&#39;&gt;{{:name}}&lt;/td&gt;
+        &lt;td data-role=&quot;exampleWidget12&quot;&gt;
+            {{for someNos}}
+                &lt;div 
+                    data-bind=&#39;{&quot;click&quot;:&quot;someClickFunciton&quot;}&#39; 
+                    class=&quot;col-md-2 {{if :}}bgm-amber{{/if}}&quot;&gt;
+                {{:}}
+                &lt;/div&gt;
+            {{/for}}
+        &lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/script&gt;</pre>
+                    <h5>Live Demo Result</h5>
+                    <div class="well well-sm">
+                        <script>
+                            be.widgets.exampleWidget11 = $.extend(true,{}, be.widgets.baseWidget,
+                            {
+                                options: {
+                                    widgetName: "exampleWidget11"
+                                },
+
+                                dataSource: [
+                                    {id : 1, name:"haxzor",someNos:[1,4,76,9,3,12]},
+                                    {id : 2, name:"cooking",someNos:[1,4,6]},
+                                    {id : 3, name:"f1driver",someNos:[1,4324324,12]},
+                                    {id : 4, name:"jedi",someNos:[1,"I LIED I'M A STRING"]},
+                                    {id : 5, name:"stampcollector",someNos:[]},
+                                    {id : 5, name:"stampcollector3",someNos:[0,1]},
+                                    {id : 5, name:"stampcollector2",someNos:null},
+                                    {id : 6, name:"badSpeller",someNos:[1,true,false,null,3,12]}
+                                ],
+
+                                viewModel: {
+                                    someClickFunciton : function()
+                                    {
+                                        alert("KAPOW");
+                                    }   
+                                }
+                            });
+
+                            be.widgets.exampleWidget12 = $.extend(true,{}, be.widgets.baseWidget,
+                            {
+                                options: {
+                                    widgetName: "exampleWidget12"
+                                },
+
+                                viewModel: {
+                                    someClickFunciton : function()
+                                    {
+                                        alert("A DIFFERENT KAPOW");
+                                    }   
+                                }
+                            });
+                        </script>
+
+                        <div data-role="exampleWidget11">
+                            <table class="table table-responsive" data-bind='{"source":"dataSource"}' data-template="genericRow"></table>
+                        </div>
+
+                        <script type="text/x-widget-template" id="genericRow">
+                            <tr>
+                                <td>{{:id}}</td>
+                                <td data-bind='{"click":"someClickFunciton"}'>{{:name}}</td>
+                                <td data-role="exampleWidget12">
+                                    {{for someNos}}
+                                        <div 
+                                            data-bind='{"click":"someClickFunciton"}' 
+                                            class="col-md-2 {{if :}}bgm-amber{{/if}}">
+                                        {{:}}
+                                        </div>
+                                    {{/for}}
+                                </td>
+                            </tr>
+                        </script>
+                    </div>
+                    <hr/>
+                </div>
+
+
+                <div class="p-b-25">
+                    <h4>Sorting</h4>
+                    <p>Templates are a powerful method of iterating over contain from a datasource and producing corrisponding html. See more documentation at the templating engine from http://www.jsviews.com/</p>
+                    <p>Note that templates can also have normal bindings.</p>
+                    <p>Also note that templates can have widgets imbeded in them.</p>
+
+                    <h5>Example Implementation</h5>
+                    <pre>&lt;div data-bind=&#39;{&quot;source&quot;:&quot;adatasourceonthewidget&quot;}&#39; data-template=&quot;aTemplateId&quot;&gt;&lt;/div&gt;</pre>
+                    
+                    
+                    <h5>Live Demo Code</h5>
+                    <pre></pre>
+                    <h5>Live Demo Result</h5>
+                    <div class="well well-sm">
+                        <script>
+                            be.widgets.exampleWidget13 = $.extend(true,{},be.widgets.baseWidget,
+                            {
+                                options: {
+                                    widgetName: "exampleWidget13"
+                                },
+
+                                dataSource: [
+                                    {id : 1, name:"haxzor",someNos:[1,4,76,9,3,12]},
+                                    {id : 2, name:"cooking",someNos:[1,4,6]},
+                                    {id : 3, name:"f1driver",someNos:[1,4324324,12]},
+                                    {id : 4, name:"jedi",someNos:[1,"I LIED I'M A STRING"]},
+                                    {id : 5, name:"stampcollector",someNos:[]},
+                                    {id : 5, name:"stampcollector3",someNos:[0,1]},
+                                    {id : 5, name:"stampcollector2",someNos:null},
+                                    {id : 6, name:"badSpeller",someNos:[1,true,false,null,3,12]}
+                                ],
+
+                                viewModel: {
+                                    _sortByIdToggled : false,
+                                    sortById : function()
+                                    {
+                                        var vm = this;
+                                        var widget = vm.widget;
+
+                                        widget.sort('id');
+                                    },
+
+                                    _sortByNameToggled : false,
+                                    sortByName : function()
+                                    {
+                                        var vm = this;
+                                        var widget = vm.widget;
+                                        
+                                    }  
+                                }
+                            });
+                        </script>
+
+                        <div data-role="exampleWidget13">
+                            <table class="table table-responsive" data-bind='{"source":"dataSource"}' data-template="genericRow2"></table>
+                        </div>
+
+                        <script type="text/x-widget-template" id="genericRow2">
+                            <tr>
+                                <td data-bind='{"clicksorter":{"prop":"id","target":"dataSource"}}'>{{:id}}</td>
+                                <td data-bind='{"clicksorter":{"prop":"name","target":"dataSource"}}'>{{:name}}</td>
+                            </tr>
+                        </script>
+                    </div>
+                    <hr/>
+                </div>
+
+                <div class="p-b-25">
+                    <h4>Overview of binding process</h4>
+
+                    <script type="text/javascript">
+                        gliffy_did = "8719021";
+                        embedGliffy();
+                    </script>
+                    <hr/>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>

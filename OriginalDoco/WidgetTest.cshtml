@@ -1,0 +1,270 @@
+﻿@section AddToHead{
+    <script src="~/documents/js/widgets/itineraryWidget.js"></script>
+    <script src="~/documents/js/widgets/campaignInfoWidget.js"></script>
+    <script src="~/documents/js/widgets/bookingWidget.js"></script>
+}
+<div class="container">
+    <div class="page-header">
+        <h1>Widget Testing</h1>
+    </div>
+    <h4>Add Widgets</h4>
+    <div class="row">
+        <div class="col-lg-4">
+            <select class="form-control" id="widgetToAdd">
+            </select>
+        </div>
+        <div class="col-lg-4">
+            <div class="input-group">
+                <input type="text" class="form-control" id="amountOfWidgetsToAdd" value="1"/>
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" id="Addem">Add Widgets!</button>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <h4>Widgets:</h4>
+    <div class="row" id="widgetGroup"></div>
+</div>
+
+<script language="javascript">
+    $("#Addem").click(function ()
+    {
+        var count = $("#amountOfWidgetsToAdd").val();
+        var dataSource = { name: $("#widgetToAdd").val() };
+        
+        for(var i=0; i < count; i++){
+            $("#widgetGroup").append(
+                $.templates($("#widgetTemplate").html()).render(dataSource)
+            );
+        }
+
+        be.util.createWidgets();
+    });
+
+    $(document).ready(function () {
+        for (var widget in be.widgets)
+        {
+            var dataSource = {
+                name: be.widgets[widget].options.widgetName,
+                tidyName: be.widgets[widget].options.widgetName
+                    .replace(/([A-Z])/g, ' $1')
+                    .replace(/^./, function (str) { return str.toUpperCase(); })
+            };
+
+            $("#widgetToAdd").append(
+                $.templates($("#widgetNameList").html()).render(dataSource)
+            );
+        }
+    });
+</script>
+
+<script type="text/x-widget-template" id="widgetTemplate">
+    <div class="panel panel-primary" data-role="{{:name}}">
+
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-lg-4">
+                    <b>Widget Name:</b>
+                    <span data-bind='{"text":"widgetName"}'></span>
+                </div>
+                <div class="col-lg-4">
+                    <b>GUID:</b>
+                    <span data-bind='{"text":"guid"}'></span>
+                </div>
+                <div class="col-lg-4">
+                    <button data-bind='{"attr":{"value":"~#+guid","attr":"data-target"}}'
+                            class="btn btn-primary btn-xs pull-right"
+                            type="button"
+                            data-toggle="collapse"
+                            aria-expanded="false"
+                            aria-controls="collapseExample">
+                        Open/Close
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="collapse in" data-bind='{"attr":{"value":"guid","attr":"id"}}'>
+            <div class="panel-body">
+                <div class="btn-group" role="group" aria-label="..." style="margin-bottom:20px;">
+                    <button data-bind='{"attr":{"value":"~#Options+guid","attr":"data-target"}}'
+                            class="btn btn-default"
+                            type="button"
+                            data-toggle="collapse"
+                            aria-expanded="false"
+                            aria-controls="collapseExample">
+                        Options
+                    </button>
+                    <button data-bind='{"attr":{"value":"~#ViewModel+guid","attr":"data-target"}}'
+                            class="btn btn-default"
+                            type="button"
+                            data-toggle="collapse"
+                            aria-expanded="false"
+                            aria-controls="collapseExample">
+                        View Model
+                    </button>
+                    <button data-bind='{"attr":{"value":"~#BaseWidget+guid","attr":"data-target"}}'
+                            class="btn btn-default"
+                            type="button"
+                            data-toggle="collapse"
+                            aria-expanded="false"
+                            aria-controls="collapseExample">
+                        Base Widget
+                    </button>
+                    <button data-bind='{"attr":{"value":"~#DataSource+guid","attr":"data-target"}}'
+                            class="btn btn-default"
+                            type="button"
+                            data-toggle="collapse"
+                            aria-expanded="false"
+                            aria-controls="collapseExample">
+                        Data Source
+                    </button>
+                    <button data-bind='{"attr":{"value":"~#View+guid","attr":"data-target"}}'
+                            class="btn btn-default"
+                            type="button"
+                            data-toggle="collapse"
+                            aria-expanded="false"
+                            aria-controls="collapseExample">
+                        View
+                    </button>
+                    <button data-bind='{"attr":{"value":"~#Output+guid","attr":"data-target"}}'
+                            class="btn btn-default"
+                            type="button"
+                            data-toggle="collapse"
+                            aria-expanded="false"
+                            aria-controls="collapseExample">
+                        Output
+                    </button>
+                </div>
+
+                <div class="panel panel-info collapse" data-bind='{"attr":{"value":"~Options+guid","attr":"id"}}'>
+                    <div class="panel-heading">
+                        <b>Options</b>
+                    </div>
+                    <div class="panel-body">
+                        <div class="container-fluid"
+                             data-template='genericRow'
+                             data-bind='{"source":"options"}'>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-info collapse" data-bind='{"attr":{"value":"~ViewModel+guid","attr":"id"}}'>
+                    <div class="panel-heading">
+                        <b>View Model</b>
+                    </div>
+                    <div class="panel-body">
+                        <div class="container-fluid"
+                             data-template='genericRow'
+                             data-bind='{"source":"viewModel"}'>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-info collapse" data-bind='{"attr":{"value":"~BaseWidget+guid","attr":"id"}}'>
+                    <div class="panel-heading">
+                        <b>Base Widget</b>
+                    </div>
+                    <div class="panel-body">
+                        <div class="alert alert-danger" role="alert">
+                            <b>You should not need to change/touch stuff in here.</b>
+                        </div>
+                        <div class="container-fluid"
+                             data-template='genericRow'
+                             data-bind='{"source":"widget"}'>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-info collapse" data-bind='{"attr":{"value":"~DataSource+guid","attr":"id"}}'>
+                    <div class="panel-heading">
+                        <b>Data Source</b>
+                    </div>
+                    <div class="panel-body">
+                        <div class="container-fluid"
+                             data-template='genericRowValues'
+                             data-bind='{"source":"dataSource"}'>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-info collapse" data-bind='{"attr":{"value":"~View+guid","attr":"id"}}'>
+                    <div class="panel-heading">
+                        <b>View</b>
+                    </div>
+                    <div class="panel-body">
+                        <div>
+                            <textarea class="form-control"
+                                      rows="10"
+                                      data-bind='{"value":"view","keyup":"bind"}'></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-info collapse in" data-bind='{"attr":{"value":"~Output+guid","attr":"id"}}'>
+                    <div class="panel-heading">
+                        <b>Output</b>
+                    </div>
+                    <div class="panel-body">
+                        <div data-bind='{"html":"view"}'></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-widget-template" id="widgetNameList">
+    <option value="{{:name}}">{{:tidyName}}</option>
+</script>
+
+<script type="text/x-widget-template" id="genericRow">
+    <h4 class="col-lg-12">Params</h4>
+    {{props}}
+    <div class="col-lg-6">
+        <div class="input-group" style="margin-bottom:5px;">
+            <span class="input-group-addon"><b>{{>key}}</b></span>
+            <input type="text" class="form-control" data-bind='{"value":"{{>key}}"}' />
+        </div>
+    </div>
+    {{/props}}
+
+    <h4 class="col-lg-12">Functions</h4>
+    {{for ~returnFunctions()}}
+    <div class="col-lg-6">
+        <div class="input-group" style="margin-bottom:5px;">
+            <span class="input-group-addon"><b>{{:name}}</b></span>
+            <input type="text" class="form-control" disabled="disabled" />
+        </div>
+    </div>
+    {{else}}
+    <div class="col-lg-12">
+        <div class="well well-sm" style="padding:5px;margin-bottom:3px;">None Found</div>
+    </div>
+    {{/for}}
+</script>
+
+<script type="text/x-widget-template" id="genericRowValues">
+    {{* window.counter = 0}}
+    {{props}}
+        {{if counter == 0}}
+            <div class="row">
+        {{/if}}
+        <div class="col-lg-3">
+            <b>{{>key}}</b>
+            <div class="well well-sm" style="padding:5px;margin-bottom:3px;">
+                {{>prop}}
+            </div>
+        </div>
+        {{if counter == 4}} 
+            {{* counter = 0}}
+            </div>
+        {{/if}}
+        {{* counter++ }}
+    {{else}}
+    <div class="col-lg-12">
+        <div class="" style="padding:5px;margin-bottom:3px;">None Found</div>
+    </div>
+    {{/for}}
+</script>
